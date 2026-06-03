@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, Star } from 'lucide-react';
 import { IMAGES } from '../data';
@@ -8,33 +8,76 @@ interface HeroProps {
   onOpenBooking: () => void;
 }
 
+const SLIDESHOW_IMAGES = [
+  homeBgImg,
+  IMAGES.heroBridal,
+  IMAGES.aboutSalon,
+  IMAGES.galleryHair,
+  'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200', // Luxury calm spa
+  'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1200'  // Premium salon stations
+];
+
 export default function Hero({ onOpenBooking }: HeroProps) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDESHOW_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center bg-gradient-to-br from-[#1d0e12] via-deep-burgundy to-charcoal-light text-white overflow-hidden py-24 px-6 md:px-12 select-none"
     >
-      {/* Background Image Layer */}
+      {/* Background Image Slideshow Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
-        <motion.img
-          initial={{ scale: 1.15, opacity: 0 }}
-          animate={{ scale: 1.02, opacity: 0.35 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          src={homeBgImg}
-          alt=""
-          className="w-full h-full object-cover mix-blend-overlay"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1d0e12]/60 via-transparent to-black/70 mix-blend-multiply" />
+        {SLIDESHOW_IMAGES.map((img, index) => (
+          <motion.img
+            key={img}
+            initial={{ opacity: 0, scale: 1.12 }}
+            animate={{ 
+              opacity: index === currentSlide ? 0.35 : 0,
+              scale: index === currentSlide ? 1.02 : 1.10
+            }}
+            transition={{ duration: 1.8, ease: "easeInOut" }}
+            src={img}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+            referrerPolicy="no-referrer"
+          />
+        ))}
+        {/* Overlay gradient to keep high-contrast readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1d0e12]/80 via-transparent to-black/85 mix-blend-multiply" />
       </div>
 
-      {/* Background decorations matching raw HTML mockup */}
+      {/* Background decoration elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_20%_40%,rgba(214,163,115,0.15)_0%,transparent_60%)] z-0" />
       
       {/* Decorative Rotating Circles */}
       <div className="absolute -top-24 -right-24 w-[550px] h-[550px] border border-rose-gold/15 rounded-full pointer-events-none animate-[spin_50s_linear_infinite]" />
       <div className="absolute top-12 right-12 w-[350px] h-[350px] border border-rose-gold/10 rounded-full pointer-events-none animate-[spin_40s_linear_infinite_reverse]" />
       
+      {/* Slideshow Indicator Dots - Floating Left Side */}
+      <div className="absolute left-6 md:left-12 bottom-6 z-20 flex items-center gap-2" id="slideshow-controls">
+        {SLIDESHOW_IMAGES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className="focus:outline-none transition-all duration-300"
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            <span 
+              className={`block h-1.5 rounded-full transition-all duration-300 ${
+                index === currentSlide ? 'w-8 bg-rose-gold' : 'w-2 bg-white/30 hover:bg-white/60'
+              }`} 
+            />
+          </button>
+        ))}
+      </div>
+
       {/* Centered container with responsive desktop grids */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-20">
         
