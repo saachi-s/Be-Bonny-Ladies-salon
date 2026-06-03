@@ -20,10 +20,18 @@ const SLIDESHOW_IMAGES = [
 export default function Hero({ onOpenBooking }: HeroProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Preload slideshow images to ensure perfectly smooth transitions without flashes
+  useEffect(() => {
+    SLIDESHOW_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDESHOW_IMAGES.length);
-    }, 5000);
+    }, 6000); // 6 seconds display time
     return () => clearInterval(timer);
   }, []);
 
@@ -33,24 +41,27 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       className="relative min-h-screen flex items-center bg-gradient-to-br from-[#1d0e12] via-deep-burgundy to-charcoal-light text-white overflow-hidden py-24 px-6 md:px-12 select-none"
     >
       {/* Background Image Slideshow Layer */}
-      <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden bg-[#12070a]">
         {SLIDESHOW_IMAGES.map((img, index) => (
           <motion.img
             key={img}
-            initial={{ opacity: 0, scale: 1.12 }}
+            initial={{ opacity: 0, scale: 1.15 }}
             animate={{ 
-              opacity: index === currentSlide ? 0.35 : 0,
-              scale: index === currentSlide ? 1.02 : 1.10
+              opacity: index === currentSlide ? 0.45 : 0,
+              scale: index === currentSlide ? 1.02 : 1.15,
             }}
-            transition={{ duration: 1.8, ease: "easeInOut" }}
+            transition={{ 
+              opacity: { duration: 2.2, ease: "easeInOut" },
+              scale: { duration: 6.5, ease: "easeOut" }
+            }}
             src={img}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+            className="absolute inset-0 w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
         ))}
         {/* Overlay gradient to keep high-contrast readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1d0e12]/80 via-transparent to-black/85 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1d0e12]/85 via-[#1d0e12]/40 to-black/90" />
       </div>
 
       {/* Background decoration elements */}
