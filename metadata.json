@@ -1,0 +1,6 @@
+{
+  "name": "Be Bonny Ladies salon",
+  "description": "Tamluk's leading premium beauty parlour for gorgeous bridal makeup, creative hair styling, and premier ladies salon treatments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-rose-gold: #D4A373;
+  --color-deep-burgundy: #6B2737;
+  --color-blush-pink: #F7D6E0;
+  --color-champagne: #E6C79C;
+  --color-ivory: #FFFDF8;
+  --color-charcoal: #2C2C2C;
+  --color-charcoal-light: #4A4A4A;
+  
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sub: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --font-alt: 'Montserrat', sans-serif;
+}
+
+/* Custom scrollbar configurations */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Smooth Scrolling Anchor Settings */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
